@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Calculator</title>
+    <!-- Favicon: use provided sneaker image -->
+    <link rel="icon" href="favicon.jpg" type="image/jpeg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background-image: linear-gradient(rgba(245, 247, 250, 0.9), rgba(195, 207, 226, 0.9)), 
+                              url('background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 600px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            padding: 40px 30px;
+            margin: 20px auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 通用导航栏样式 - 强制横向排列并在窄屏时允许横向滚动 */
+        .navbar {
+            display: flex;
+            flex-direction: row; /* 强制横向 */
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin: 20px 0;
+            padding: 8px 0;
+            border-bottom: 2px solid #eee;
+            width: 100%;
+            max-width: 1000px;
+            flex-wrap: nowrap; /* 不换行，避免纵向堆叠 */
+            overflow-x: auto; /* 窄屏时水平滚动 */
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .navbar::-webkit-scrollbar { height: 8px; }
+        .navbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 4px; }
+
+        .nav-link {
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap; /* 避免换行 */
+            padding: 10px 16px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #4CAF50;
+            border-bottom: 3px solid #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <!-- 通用导航栏 -->
+    <nav class="navbar">
+        <button class="nav-link" onclick="window.location.href='index.html'">Home</button>
+        <button class="nav-link" onclick="window.location.href='words.html'">Words</button>
+        <button class="nav-link" onclick="window.location.href='knowledge.html'">Knowledge</button>
+        <button class="nav-link" onclick="window.location.href='teaching.html'">Teaching</button>
+        <button class="nav-link" onclick="window.location.href='plan.html'">My Plan</button>
+        <button class="nav-link" onclick="window.location.href='checkin.html'">Check In</button>
+        <button class="nav-link active" onclick="window.location.href='calculator.html'">Calculator</button>
+    </nav>
+
+    <!-- 计算界面容器 -->
+    <div class="container">
+        <div class="header">
+            <h1>Fit Plan Starter</h1>
+            <p>Enter your height and weight to get your personalized plan!</p>
+        </div>
+
+        <div class="form-group">
+            <label for="height">Height (cm):</label>
+            <input type="number" id="height" name="height" placeholder="e.g. 175" min="100" max="250">
+        </div>
+
+        <div class="form-group">
+            <label for="weight">Weight (kg):</label>
+            <input type="number" id="weight" name="weight" placeholder="e.g. 65" min="30" max="200">
+        </div>
+
+        <button id="submit-btn">Get My Fitness Plan</button>
+    </div>
+
+    <script>
+        document.getElementById('submit-btn').addEventListener('click', () => {
+            const height = parseFloat(document.getElementById('height').value);
+            const weight = parseFloat(document.getElementById('weight').value);
+
+            if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
+                alert('Please enter valid height and weight!');
+                return;
+            }
+
+            const heightM = height / 100;
+            const bmi = (weight / (heightM * heightM)).toFixed(1);
+            const bmiData = {
+                height: height,
+                weight: weight,
+                bmi: bmi,
+                category: bmi < 18.5 ? "Underweight" : bmi < 24 ? "Normal" : bmi < 28 ? "Overweight" : "Obese"
+            };
+            localStorage.setItem('fitnessBMI', JSON.stringify(bmiData));
+            window.location.href = 'plan.html';
+        });
+    </script>
+</body>
+</html>

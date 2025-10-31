@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Fitness Plan</title>
+    <!-- Favicon: use provided sneaker image -->
+    <link rel="icon" href="favicon.jpg" type="image/jpeg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .plan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .plan-header h2 {
+            color: #333;
+            font-size: 2rem;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .secondary-btn {
+            background-color: #666;
+        }
+
+        .secondary-btn:hover {
+            background-color: #555;
+        }
+
+        .bmi-info {
+            background-color: #f0f8f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .bmi-info p {
+            color: #333;
+            line-height: 1.6;
+            margin-bottom: 5px;
+        }
+
+        .bmi-info strong {
+            color: #4CAF50;
+        }
+
+        .plan-week {
+            margin-bottom: 30px;
+        }
+
+        .plan-week h3 {
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #eee;
+            font-size: 1.5rem;
+        }
+
+        .plan-day {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .plan-day h4 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+
+        .plan-exercises {
+            margin-left: 20px;
+        }
+
+        .plan-exercises li {
+            margin-bottom: 8px;
+            color: #333;
+            line-height: 1.5;
+        }
+
+        /* 通用导航栏样式 - 强制横向排列并在窄屏时允许横向滚动 */
+        .navbar {
+            display: flex;
+            flex-direction: row; /* 强制横向 */
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin: 20px 0;
+            padding: 8px 0;
+            border-bottom: 2px solid #eee;
+            width: 100%;
+            max-width: 1000px;
+            flex-wrap: nowrap; /* 不换行，避免纵向堆叠 */
+            overflow-x: auto; /* 窄屏时水平滚动 */
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .navbar::-webkit-scrollbar { height: 8px; }
+        .navbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 4px; }
+
+        .nav-link {
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap; /* 避免换行 */
+            padding: 10px 16px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #4CAF50;
+            border-bottom: 3px solid #4CAF50;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn-group button {
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- 通用导航栏 -->
+    <nav class="navbar">
+        <button class="nav-link" onclick="window.location.href='index.html'">Home</button>
+        <button class="nav-link" onclick="window.location.href='words.html'">Words</button>
+        <button class="nav-link" onclick="window.location.href='knowledge.html'">Knowledge</button>
+        <button class="nav-link" onclick="window.location.href='teaching.html'">Teaching</button>
+        <button class="nav-link active" onclick="window.location.href='plan.html'">My Plan</button>
+        <button class="nav-link" onclick="window.location.href='checkin.html'">Check In</button>
+    </nav>
+
+    <!-- 计划页核心内容 -->
+    <div class="container">
+        <div class="plan-header">
+            <h2>Your Personalized Fitness Plan</h2>
+            <button class="secondary-btn" id="back-to-home" onclick="window.location.href='index.html'">Back to Home</button>
+        </div>
+
+        <!-- BMI结果显示 -->
+        <div class="bmi-info" id="bmi-result">
+            <!-- JS会动态填充BMI数据 -->
+        </div>
+
+        <!-- 第一周计划 -->
+        <div class="plan-week">
+            <h3>Week 1: Adaptation Phase</h3>
+            <!-- 周一 -->
+            <div class="plan-day">
+                <h4>Monday: Full-body Light Workout</h4>
+                <ul class="plan-exercises">
+                    <li>Warm-up: 5 minutes jogging or brisk walking</li>
+                    <li>Squats: 3 sets × 12 reps</li>
+                    <li>Push-ups (kneeling if needed): 3 sets × 8–10 reps</li>
+                    <li>Plank: 3 sets × 20 seconds</li>
+                    <li>Stretching: 5 minutes (focus on legs and core)</li>
+                </ul>
+            </div>
+            <!-- 周二 -->
+            <div class="plan-day">
+                <h4>Tuesday: Cardio</h4>
+                <ul class="plan-exercises">
+                    <li>Brisk walk or light jog: 20 minutes</li>
+                    <li>Intervals: 1 min fast walk + 1 min slow walk, repeat 8 times</li>
+                    <li>Stretching: 5 minutes (focus on calves and hips)</li>
+                </ul>
+            </div>
+            <!-- 周三 -->
+            <div class="plan-day">
+                <h4>Wednesday: Rest or Light Activity</h4>
+                <ul class="plan-exercises">
+                    <li>Walk: 15–20 minutes (leisurely pace)</li>
+                    <li>Full-body stretching: 10 minutes</li>
+                </ul>
+            </div>
+            <!-- 周四 -->
+            <div class="plan-day">
+                <h4>Thursday: Full-body Strength</h4>
+                <ul class="plan-exercises">
+                    <li>Warm-up: 5 minutes (arm circles + leg swings)</li>
+                    <li>Lunges: 3 sets × 10 reps per side</li>
+                    <li>Dumbbell curls (use water bottles if needed): 3 sets × 12 reps</li>
+                    <li>Crunches: 3 sets × 15 reps</li>
+                    <li>Stretching: 5 minutes (focus on quads and arms)</li>
+                </ul>
+            </div>
+            <!-- 周五 -->
+            <div class="plan-day">
+                <h4>Friday: Cardio</h4>
+                <ul class="plan-exercises">
+                    <li>Cycling or swimming: 25 minutes</li>
+                    <li>Core workout: 3 sets × 15 crunches</li>
+                    <li>Stretching: 5 minutes (focus on back and shoulders)</li>
+                </ul>
+            </div>
+            <!-- 周六 -->
+            <div class="plan-day">
+                <h4>Saturday: Full-body Workout</h4>
+                <ul class="plan-exercises">
+                    <li>Warm-up: 5 minutes (jumping jacks)</li>
+                    <li>Squat jumps: 3 sets × 10 reps</li>
+                    <li>Push-ups: 3 sets × max reps (don’t force)</li>
+                    <li>Plank: 3 sets × 30 seconds</li>
+                    <li>Stretching: 5 minutes (full-body)</li>
+                </ul>
+            </div>
+            <!-- 周日 -->
+            <div class="plan-day">
+                <h4>Sunday: Rest</h4>
+                <ul class="plan-exercises">
+                    <li>Rest well and hydrate (drink ≥2L water)</li>
+                    <li>Optional: 10 minutes light stretching</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 前往打卡页按钮 -->
+        <div class="btn-group">
+            <button id="go-to-checkin" onclick="window.location.href='checkin.html'">Check In Today</button>
+        </div>
+    </div>
+
+    <script>
+        // 读取本地存储的BMI数据并显示
+        const bmiData = JSON.parse(localStorage.getItem('fitnessBMI')) || null;
+        const bmiResultEl = document.getElementById('bmi-result');
+
+        // 若未输入身高体重，跳回首页
+        if (!bmiData) {
+            alert('Please enter your height and weight first!');
+            window.location.href = 'index.html';
+        }
+
+        // 填充BMI结果
+        bmiResultEl.innerHTML = `
+            <p><strong>Your BMI: ${bmiData.bmi}</strong> (Category: ${bmiData.category})</p>
+            <p>Based on your height (${bmiData.height}cm) and weight (${bmiData.weight}kg), we prepared this adaptation plan.</p>
+            <p>Stick to it for 1 week, then we’ll adjust the intensity!</p>
+        `;
+    </script>
+</body>
+</html>

@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Check In</title>
+    <!-- Favicon: use provided sneaker image -->
+    <link rel="icon" href="favicon.jpg" type="image/jpeg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .plan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .plan-header h2 {
+            color: #333;
+            font-size: 2rem;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .secondary-btn {
+            background-color: #666;
+        }
+
+        .secondary-btn:hover {
+            background-color: #555;
+        }
+
+        .checkin-date {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 1.3rem;
+            color: #333;
+            font-weight: bold;
+        }
+
+        .checkin-form {
+            margin-bottom: 30px;
+        }
+
+        .checkin-form h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .checkin-activities {
+            margin-bottom: 20px;
+        }
+
+        .activity-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            margin-bottom: 10px;
+        }
+
+        .activity-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 15px;
+            transform: scale(1.2);
+        }
+
+        .activity-item label {
+            margin-bottom: 0;
+            flex: 1;
+            color: #333;
+            font-size: 1rem;
+        }
+
+        .activity-item input[type="number"] {
+            width: 80px;
+            margin-left: 10px;
+            padding: 8px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+
+        .checkin-notes {
+            margin-top: 20px;
+        }
+
+        .checkin-notes label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .checkin-notes textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            min-height: 100px;
+            resize: vertical;
+            font-family: 'Arial', sans-serif;
+        }
+
+        .checkin-history {
+            margin-top: 30px;
+        }
+
+        .checkin-history h3 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+
+        .history-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .history-item {
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .history-date {
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .history-activities ul {
+            margin-left: 20px;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .history-notes {
+            color: #333;
+            font-style: italic;
+            background-color: #f0f0f0;
+            padding: 8px;
+            border-radius: 4px;
+        }
+
+        /* 通用导航栏样式 - 强制横向排列并在窄屏时允许横向滚动 */
+        .navbar {
+            display: flex;
+            flex-direction: row; /* 强制横向 */
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin: 20px 0;
+            padding: 8px 0;
+            border-bottom: 2px solid #eee;
+            width: 100%;
+            max-width: 1000px;
+            flex-wrap: nowrap; /* 不换行，避免纵向堆叠 */
+            overflow-x: auto; /* 窄屏时水平滚动 */
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .navbar::-webkit-scrollbar { height: 8px; }
+        .navbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 4px; }
+
+        .nav-link {
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap; /* 避免换行 */
+            padding: 10px 16px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #4CAF50;
+            border-bottom: 3px solid #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <!-- 通用导航栏 -->
+    <nav class="navbar">
+        <button class="nav-link" onclick="window.location.href='index.html'">Home</button>
+        <button class="nav-link" onclick="window.location.href='words.html'">Words</button>
+        <button class="nav-link" onclick="window.location.href='knowledge.html'">Knowledge</button>
+        <button class="nav-link" onclick="window.location.href='teaching.html'">Teaching</button>
+        <button class="nav-link" onclick="window.location.href='plan.html'">My Plan</button>
+        <button class="nav-link active" onclick="window.location.href='checkin.html'">Check In</button>
+    </nav>
+
+    <!-- 打卡页核心内容 -->
+    <div class="container">
+        <div class="plan-header">
+            <h2>Daily Check In</h2>
+            <button class="secondary-btn" id="back-to-plan" onclick="window.location.href='plan.html'">Back to Plan</button>
+        </div>
+
+        <!-- 当前日期 -->
+        <div class="checkin-date" id="current-date">
+            <!-- JS会动态填充当前日期 -->
+        </div>
+
+        <!-- 打卡表单 -->
+        <div class="checkin-form">
+            <h3>Today's Activities</h3>
+            <div class="checkin-activities">
+                <!-- 活动1 -->
+                <div class="activity-item">
+                    <input type="checkbox" id="activity1">
+                    <label for="activity1">Completed today's plan</label>
+                </div>
+                <!-- 活动2 -->
+                <div class="activity-item">
+                    <input type="checkbox" id="activity2">
+                    <label for="activity2">Cardio</label>
+                    <input type="number" id="activity2-duration" placeholder="minutes" min="1">
+                </div>
+                <!-- 活动3 -->
+                <div class="activity-item">
+                    <input type="checkbox" id="activity3">
+                    <label for="activity3">Strength training</label>
+                    <input type="number" id="activity3-duration" placeholder="minutes" min="1">
+                </div>
+                <!-- 活动4 -->
+                <div class="activity-item">
+                    <input type="checkbox" id="activity4">
+                    <label for="activity4">Drink enough water (≥2L)</label>
+                </div>
+                <!-- 活动5 -->
+                <div class="activity-item">
+                    <input type="checkbox" id="activity5">
+                    <label for="activity5">Healthy eating today</label>
+                </div>
+            </div>
+
+            <!-- 笔记输入 -->
+            <div class="checkin-notes">
+                <label for="checkin-notes">Notes / Reflections:</label>
+                <textarea id="checkin-notes" placeholder="How did your workout feel today? Any progress or challenges?"></textarea>
+            </div>
+
+            <!-- 保存按钮 -->
+            <button id="save-checkin" style="margin-top: 15px;">Save Check In</button>
+        </div>
+
+        <!-- 打卡历史 -->
+        <div class="checkin-history">
+            <h3>Check-in History</h3>
+            <div id="history-container">
+                <!-- JS会动态填充历史记录 -->
+                <p>No check-in records yet — start your first check-in!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 显示当前日期（英文格式）
+        function displayCurrentDate() {
+            const now = new Date();
+            const options = { year: 'numeric', month: 'long', day: 'numeric', weekday: 'long' };
+            document.getElementById('current-date').textContent = now.toLocaleDateString('en-US', options);
+        }
+
+        // 加载打卡历史
+        function loadCheckinHistory() {
+            const history = JSON.parse(localStorage.getItem('fitnessCheckinHistory')) || [];
+            const historyContainer = document.getElementById('history-container');
+            
+            if (history.length === 0) {
+                historyContainer.innerHTML = '<p>No check-in records yet — start your first check-in!</p>';
+                return;
+            }
+
+            // 按日期排序（最新的在前）
+            history.sort((a, b) => new Date(b.date) - new Date(a.date));
+            
+            // 生成历史记录HTML
+            let historyHTML = '';
+            history.forEach(item => {
+                historyHTML += `
+                    <div class="history-item">
+                        <div class="history-date">${item.date}</div>
+                        <div class="history-activities">
+                            <strong>Completed Activities:</strong>
+                            <ul>
+                                ${item.activities.map(activity => `<li>${activity}</li>`).join('')}
+                            </ul>
+                        </div>
+                        ${item.notes ? `<div class="history-notes"><strong>Notes:</strong> ${item.notes}</div>` : ''}
+                    </div>
+                `;
+            });
+
+            historyContainer.innerHTML = historyHTML;
+        }
+
+        // 保存打卡记录
+        document.getElementById('save-checkin').addEventListener('click', () => {
+            const now = new Date();
+            const dateString = now.toLocaleDateString('en-US', { 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            
+            // 收集打卡数据
+            const checkinData = {
+                date: dateString,
+                activities: [
+                    document.getElementById('activity1').checked ? "Completed today's plan" : "",
+                    document.getElementById('activity2').checked ? `Cardio (${document.getElementById('activity2-duration').value || 0} minutes)` : "",
+                    document.getElementById('activity3').checked ? `Strength training (${document.getElementById('activity3-duration').value || 0} minutes)` : "",
+                    document.getElementById('activity4').checked ? "Drank enough water (≥2L)" : "",
+                    document.getElementById('activity5').checked ? "Healthy eating" : ""
+                ].filter(activity => activity), // 过滤空值
+                notes: document.getElementById('checkin-notes').value
+            };
+
+            // 验证：至少选择一项活动
+            if (checkinData.activities.length === 0) {
+                alert('Please select at least one completed activity!');
+                return;
+            }
+
+            // 从本地存储获取历史记录
+            let history = JSON.parse(localStorage.getItem('fitnessCheckinHistory')) || [];
+            
+            // 检查是否已有当天记录（避免重复）
+            const existingIndex = history.findIndex(item => item.date === dateString);
+            if (existingIndex !== -1) {
+                history[existingIndex] = checkinData; // 更新
+            } else {
+                history.push(checkinData); // 新增
+            }
+
+            // 保存到本地存储
+            localStorage.setItem('fitnessCheckinHistory', JSON.stringify(history));
+            
+            // 提示成功并刷新历史记录
+            alert('Check-in saved successfully! Keep up the good work!');
+            loadCheckinHistory();
+            
+            // 重置表单
+            document.querySelectorAll('.checkin-form input, .checkin-form textarea').forEach(el => {
+                el.value = '';
+                if (el.type === 'checkbox') el.checked = false;
+            });
+        });
+
+        // 页面加载时初始化
+        displayCurrentDate();
+        loadCheckinHistory();
+    </script>
+</body>
+</html>

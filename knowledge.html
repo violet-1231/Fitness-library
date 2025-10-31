@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Knowledge</title>
+    <!-- Favicon: use provided sneaker image -->
+    <link rel="icon" href="favicon.jpg" type="image/jpeg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            margin-bottom: 30px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* 知识轮播样式 */
+        .knowledge-content {
+            padding: 20px 0;
+        }
+
+        .knowledge-carousel {
+            display: flex;
+            overflow-x: auto;
+            padding: 10px 0;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            gap: 20px;
+        }
+
+        .knowledge-carousel::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .knowledge-carousel::-webkit-scrollbar-thumb {
+            background-color: #4CAF50;
+            border-radius: 4px;
+        }
+
+        .knowledge-item {
+            min-width: 300px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            flex-shrink: 0;
+        }
+
+        .knowledge-item h3 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        .knowledge-item p {
+            color: #333;
+            line-height: 1.5;
+        }
+
+        .knowledge-nav {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .nav-btn {
+            background: none;
+            border: 1px solid #4CAF50;
+            color: #4CAF50;
+            padding: 8px 15px;
+            margin: 0 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .nav-btn:hover {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        /* 通用导航栏样式 - 强制横向排列并在窄屏时允许横向滚动 */
+        .navbar {
+            display: flex;
+            flex-direction: row; /* 强制横向 */
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            margin: 20px 0;
+            padding: 8px 0;
+            border-bottom: 2px solid #eee;
+            width: 100%;
+            max-width: 1000px;
+            flex-wrap: nowrap; /* 不换行，避免纵向堆叠 */
+            overflow-x: auto; /* 窄屏时水平滚动 */
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .navbar::-webkit-scrollbar { height: 8px; }
+        .navbar::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 4px; }
+
+        .nav-link {
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap; /* 避免换行 */
+            padding: 10px 16px;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: #4CAF50;
+            border-bottom: 3px solid #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <!-- 通用导航栏 -->
+    <nav class="navbar">
+        <button class="nav-link" onclick="window.location.href='index.html'">Home</button>
+        <button class="nav-link" onclick="window.location.href='words.html'">Words</button>
+        <button class="nav-link active" onclick="window.location.href='knowledge.html'">Knowledge</button>
+        <button class="nav-link" onclick="window.location.href='teaching.html'">Teaching</button>
+        <button class="nav-link" onclick="window.location.href='plan.html'">My Plan</button>
+        <button class="nav-link" onclick="window.location.href='checkin.html'">Check In</button>
+    </nav>
+
+    <!-- 知识页核心内容 -->
+    <div class="container">
+        <div class="header">
+            <h1>Fitness Knowledge</h1>
+            <p>Learn to train smarter, not harder</p>
+        </div>
+
+        <div class="knowledge-content">
+            <div class="knowledge-carousel" id="knowledge-carousel">
+                <!-- 知识卡片1 -->
+                <div class="knowledge-item">
+                    <h3>The importance of warm-up exercises</h3>
+                    <p>Before engaging in any high-intensity activity, it is necessary to perform a warm-up for at least 5 minutes. This can effectively reduce the risk of injury and activate muscles and joints.</p>
+                </div>
+                <!-- 知识卡片2 -->
+                <div class="knowledge-item">
+                    <h3>Eating reasonably and exercising</h3>
+                    <p>70% of the success of a fitness plan depends on diet, and 30% depends on exercise. Rational intake of protein and carbohydrates can aid muscle recovery.</p>
+                </div>
+                <!-- 知识卡片3 -->
+                <div class="knowledge-item">
+                    <h3>How to avoid fitness plateaus</h3>
+                    <p>When fitness results stagnate, you can try adjusting training intensity, shortening rest time, or changing training movements to break through the bottleneck.</p>
+                </div>
+                <!-- 知识卡片4 -->
+                <div class="knowledge-item">
+                    <h3>Stretching after fitness training</h3>
+                    <p>Proper stretching after exercise can alleviate muscle soreness, promote recovery, and prevent poor posture. Focus on stretching the muscles you used during training.</p>
+                </div>
+            </div>
+
+            <!-- 轮播控制按钮 -->
+            <div class="knowledge-nav">
+                <button class="nav-btn" id="prev-knowledge">←</button>
+                <button class="nav-btn" id="next-knowledge">→</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 知识轮播逻辑
+        const prevBtn = document.getElementById('prev-knowledge');
+        const nextBtn = document.getElementById('next-knowledge');
+        const carousel = document.getElementById('knowledge-carousel');
+        const itemWidth = 320; // 知识卡片宽度（含间距）
+        let scrollPos = 0;
+
+        // 上一张按钮
+        prevBtn.addEventListener('click', () => {
+            scrollPos = Math.max(scrollPos - itemWidth, 0);
+            carousel.scrollTo({
+                left: scrollPos,
+                behavior: 'smooth'
+            });
+        });
+
+        // 下一张按钮
+        nextBtn.addEventListener('click', () => {
+            const maxScroll = carousel.scrollWidth - carousel.clientWidth;
+            scrollPos = Math.min(scrollPos + itemWidth, maxScroll);
+            carousel.scrollTo({
+                left: scrollPos,
+                behavior: 'smooth'
+            });
+        });
+    </script>
+</body>
+</html>
